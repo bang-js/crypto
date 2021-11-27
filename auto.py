@@ -32,7 +32,7 @@ while True:
                 current_price = pyupbit.get_orderbook(ticker=ticker)["orderbook_units"][0]["ask_price"]
                 #fiftyhit(ticker)
                 df = pyupbit.get_ohlcv(ticker, interval="day", count=1)
-                target_price = df.iloc[0]['open'] * 1.5
+                target_price = buy_price* 1.5
                 if target_price < current_price :
                     bal = upbit.get_balance(ticker=ticker)
                     upbit.sell_market_order(ticker, bal)
