@@ -39,7 +39,7 @@ while True:
                     print(ticker, "50%매도", current_price)
 
                 # sonjeol(ticker, buy_price)
-                target_price =  buy_price* 0.9
+                target_price =  buy_price* 0.8
                 if target_price > current_price :
                     bal = upbit.get_balance(ticker=ticker)
                     upbit.sell_market_order(ticker, bal)
