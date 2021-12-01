@@ -32,11 +32,11 @@ while True:
                 current_price = pyupbit.get_orderbook(ticker=ticker)["orderbook_units"][0]["ask_price"]
                 #fiftyhit(ticker)
                 df = pyupbit.get_ohlcv(ticker, interval="day", count=1)
-                target_price = buy_price* 1.5
+                target_price = buy_price* 1.4
                 if target_price < current_price :
                     bal = upbit.get_balance(ticker=ticker)
                     upbit.sell_market_order(ticker, bal)
-                    print(ticker, "50%매도", current_price)
+                    print(ticker, "40%매도", current_price)
 
                 # sonjeol(ticker, buy_price)
                 target_price =  buy_price* 0.8
@@ -44,7 +44,7 @@ while True:
                     bal = upbit.get_balance(ticker=ticker)
                     upbit.sell_market_order(ticker, bal)
                     print(ticker, "손절매도", current_price)
-        time.sleep(10)
+        time.sleep(1)
 
     except Exception as e:
         print(e)
