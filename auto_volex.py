@@ -41,7 +41,7 @@ while True:
         end_time = start_time + datetime.timedelta(minutes=60)
 
         # 보유 원화
-        krw = float(upbit.get_balance("KRW")) 
+        krw = int(upbit.get_balance("KRW")) 
         print(start_time,now,end_time)
         
         # 매수 진행
@@ -53,16 +53,44 @@ while True:
                 
                 # 조건을 충족하는 ticker에 대해 전액(krw) 매수 (0.01, 1)
                 df = pyupbit.get_ohlcv(ticker, interval="minute60", count=2)
-                if  (df.iloc[-2]['high'] - df.iloc[-2]['low'])*1.1 >= (current_price - df.iloc[-1]['open']) >= (df.iloc[-2]['high'] - df.iloc[-2]['low']) \
+                if  (current_price - df.iloc[-1]['open']) >= (df.iloc[-2]['high'] - df.iloc[-2]['low']) \
                     and df.iloc[-2]['open'] < df.iloc[-2]['close'] \
-                         and 0.01 < (df.iloc[-2]['high'] - df.iloc[-2]['low'])/df.iloc[-2]['low'] \
-                             and (current_price > 300 or 30 < current_price < 100 ) :
-                    upbit.buy_market_order(ticker, krw)
-                    print(ticker, "매수", current_price)
-                    print(upbit.get_balances())
-                    buy_price = current_price
-                    start = 1
-                    break
+                         and 0.01 < (df.iloc[-2]['high'] - df.iloc[-2]['low'])/df.iloc[-2]['low'] :
+                        if current_price >= 10000 : #호가단위 10원
+                            if (df.iloc[-2]['high'] - df.iloc[-2]['low'])+20 >= (current_price - df.iloc[-1]['open']) : 
+                                upbit.buy_market_order(ticker, krw/1.01)
+                                print(ticker, "매수", current_price)
+                                print(upbit.get_balances())
+                                buy_price = current_price
+                                start = 1
+                                break
+                        elif 10000 > current_price >= 3000 : #호가단위 5원
+                            if (df.iloc[-2]['high'] - df.iloc[-2]['low'])+10 >= (current_price - df.iloc[-1]['open']) : 
+                                upbit.buy_market_order(ticker, krw/1.01)
+                                print(ticker, "매수", current_price)
+                                print(upbit.get_balances())
+                                buy_price = current_price
+                                start = 1
+                                break
+                        elif 1000 > current_price >= 300 : #호가단위 1원
+                            if (df.iloc[-2]['high'] - df.iloc[-2]['low'])+2 >= (current_price - df.iloc[-1]['open']) : 
+                                upbit.buy_market_order(ticker, krw/1.01)
+                                print(ticker, "매수", current_price)
+                                print(upbit.get_balances())
+                                buy_price = current_price
+                                start = 1
+                                break
+                        elif 100 > current_price >= 30 : #호가단위 0.1원
+                            if (df.iloc[-2]['high'] - df.iloc[-2]['low'])+0.2 >= (current_price - df.iloc[-1]['open']) : 
+                                upbit.buy_market_order(ticker, krw/1.01)
+                                print(ticker, "매수", current_price)
+                                print(upbit.get_balances())
+                                buy_price = current_price
+                                start = 1
+                                break
+                        else : #호가단위가 0.3% 이상
+                            continue
+
                 # ticker 1회 돌리면 1초 휴식
                 time.sleep(1)
 
@@ -80,7 +108,7 @@ while True:
                     break
                 
                 # -2.5% 떨어지면 전량 매도 (손절)
-                elif buy_price * 0.97 > current_price :
+                elif buy_price * 0.975 > current_price :
                     upbit.sell_market_order(ticker, bal)
                     print(ticker, "-2.5% 손절 매도", current_price)
                     start = 0
@@ -98,7 +126,7 @@ while True:
             print(ticker, "매도", current_price)
             start =0
 
-        print(ticker, start)    
+        print(ticker, start, krw)    
         time.sleep(1)
 
     except Exception as e:
