@@ -51,7 +51,7 @@ while True:
                 
                 # 조건을 충족하는 ticker에 대해 전액(krw) 매수 (0.01, 1)
                 df = pyupbit.get_ohlcv(ticker, interval="minute60", count=2)
-                if  (df.iloc[-2]['high'] - df.iloc[-2]['low'])+current_price*0.005 >= (current_price - df.iloc[-1]['open']) >= (df.iloc[-2]['high'] - df.iloc[-2]['low']) \
+                if  (df.iloc[-2]['high'] - df.iloc[-2]['low'])*1.1 >= (current_price - df.iloc[-1]['open']) >= (df.iloc[-2]['high'] - df.iloc[-2]['low']) \
                     and df.iloc[-2]['open'] < df.iloc[-2]['close'] \
                          and 0.01 < (df.iloc[-2]['high'] - df.iloc[-2]['low'])/df.iloc[-2]['low'] \
                              and (current_price > 2500 or 1000 > current_price >= 250 or 100 > current_price >= 25) :
@@ -89,7 +89,7 @@ while True:
                 time.sleep(1)
 
             # 1시간 뒤 매도 진행
-        elif end_time - datetime.timedelta(seconds=30) < now < end_time - datetime.timedelta(seconds=1) and start == 1 :
+        elif end_time - datetime.timedelta(seconds=10) < now < end_time - datetime.timedelta(seconds=1) and start == 1 :
             print(ticker, now, end_time, start)
             bal = float(upbit.get_balance(ticker=ticker))
             current_price = pyupbit.get_orderbook(ticker=ticker)["orderbook_units"][0]["ask_price"]
