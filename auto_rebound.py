@@ -19,7 +19,7 @@ def get_start_time(ticker):
 
 
 def past(ticker) :
-    df = pyupbit.get_ohlcv(ticker, interval="minute10", count=6) # 최근 6개 데이터
+    df = pyupbit.get_ohlcv(ticker, interval="minute10", count=12) # 최근 12개 데이터
     change = 0
     for k in range(2,12):
         change += (df.iloc[-k]['close']-df.iloc[-k]['open'])/df.iloc[-k]['open'] # 이전 10분부터 100분까지의 총변화율
