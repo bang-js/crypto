@@ -21,8 +21,8 @@ def get_start_time(ticker):
 def past(ticker) :
     df = pyupbit.get_ohlcv(ticker, interval="minute10", count=6) # 최근 6개 데이터
     change = 0
-    for k in range(2,7):
-        change += (df.iloc[-k]['close']-df.iloc[-k]['open'])/df.iloc[-k]['open'] # 이전 10분부터 50분까지의 총변화율
+    for k in range(2,12):
+        change += (df.iloc[-k]['close']-df.iloc[-k]['open'])/df.iloc[-k]['open'] # 이전 10분부터 100분까지의 총변화율
     return change
 
 
@@ -63,7 +63,7 @@ while True:
                 
                 # 조건을 충족하는 ticker에 대해 전액(krw) 매수
                 change = past(ticker)  
-                if  change < -0.075  :                           # 총변화율 -0.075 이하면 매수
+                if  change < -0.1  :                           # 총변화율 -0.075 이하면 매수
                     upbit.buy_market_order(ticker, krw/3.01)   # 수수료 고려해서 1.01로 나눠줌 # 연습용 21.01
                     df = pyupbit.get_ohlcv(ticker, interval="minute10", count=1)
                     buy_time = df.index[0]
@@ -85,9 +85,9 @@ while True:
                 bal = float(upbit.get_balance(ticker=ticker))       # ticker는 buy에서 저장
 
                 # 7.5% 넘어가면 전량 매도
-                if buy_price * 1.075 < current_price :
+                if buy_price * 1.1 < current_price :
                     upbit.sell_market_order(ticker, bal)
-                    print(ticker, "7.5% 이익매도", current_price)
+                    print(ticker, "10% 이익매도", current_price)
                     start = 0
                     break
                 
