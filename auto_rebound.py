@@ -50,8 +50,6 @@ while True:
             start_time = get_start_time("KRW-BTC")                  # start time은 30분마다 갱신    
         elif start == 1:
             start_time = buy_time
-        # end_time = start_time + datetime.timedelta(minutes=10)  # 매수 후 30분동안 탐색
-        # end_time = start_time + datetime.timedelta(hours=1)
 
         # 보유 원화
         krw = int(upbit.get_balance("KRW")) 
@@ -105,11 +103,10 @@ while True:
 
         # 30분 뒤 매도 진행
         elif start_time + datetime.timedelta(minutes=30) - datetime.timedelta(seconds=30) < now < start_time + datetime.timedelta(minutes=30) - datetime.timedelta(seconds=1) and start == 1 :
-            print("끝")
             bal = float(upbit.get_balance(ticker=ticker))
             upbit.sell_market_order(ticker, bal)
             current_price = pyupbit.get_orderbook(ticker=ticker)["orderbook_units"][0]["ask_price"]
-            print(ticker, "VSC 매도", current_price)
+            print(ticker, "매도", current_price)
             print(krw)
             start =0
 
