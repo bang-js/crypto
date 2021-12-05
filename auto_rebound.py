@@ -6,10 +6,8 @@ from calendar import monthrange  #매달 말일을 알려주는 함수
 import time
 
 ### 로그인
-access = "zJd0m03tsKrhcjiKWX9pEBmMbTxUWbjNGql0vvjl"
-secret = "gWvVYOSCbRFWEtxsedcoeFBr8FWqK0CT9WQXNwKK"
-# access = ""
-# secret = ""
+access = ""
+secret = ""
 upbit = pyupbit.Upbit(access, secret)
 print("autotrade start")
 
