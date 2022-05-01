@@ -59,6 +59,7 @@ ROR.to_csv('C:/etf/'+filename, index=None)
 
 print(pow(ROR.iloc[-1][-1],1/(2022-1986+1)))
 
+# 분석결과 simple보다 (1거래) MDD가 더 큰 반면 수익률에서 차이가 없음
 
 #########################
 # bakcktest : 1%와 simple 결합
